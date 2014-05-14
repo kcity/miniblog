@@ -14,3 +14,7 @@ Setup database:
 Run:
 
 ->python miniblog.py
+
+USERNAME: admin
+
+PASSWORD: default
