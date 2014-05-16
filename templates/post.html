@@ -4,6 +4,7 @@
       <div class="col-sm-8 blog-main">
         <div class="blog-post">
               <h3 class="blog-post-title">{{ post.title }}</h3><hr>
+              <p class="blog-post-meta">{{ post.timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
               <p>{{ post.text|safe }}</p>
         </div>
                 

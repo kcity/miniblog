@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from flask.ext.sqlalchemy import SQLAlchemy
 from flask import Flask, request, session, g, redirect, url_for, render_template, flash
 
@@ -26,6 +27,7 @@ class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     text = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, index=True)
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     def __repr__(self):
@@ -63,7 +65,7 @@ def add_entry():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
     if request.method == 'POST':
-        post=Post(title=request.form['title'], text=request.form['text'])
+        post=Post(title=request.form['title'], text=request.form['text'], timestamp=datetime.now())
         db.session.add(post)
         flash('New entry was successfully posted')
         return redirect(url_for('show_entries'))

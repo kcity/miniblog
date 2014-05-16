@@ -5,6 +5,7 @@
          {% for entry in entries %}
             <div class="blog-post">
               <h2 class="blog-post-title">{{ entry.title }}</h2><hr>
+              <p class="blog-post-meta">{{ entry.timestamp.strftime('%Y-%m-%d %H:%M') }}</p>
               <p>{{ entry.text|safe }}</p>
               <div><a href="{{ url_for('post', id=entry.id) }}">See Comment</a></div>
             </div>
