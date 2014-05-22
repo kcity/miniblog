@@ -1,7 +1,8 @@
 import os
 from datetime import datetime
+from math import ceil
 from flask.ext.sqlalchemy import SQLAlchemy
-from flask import Flask, request, session, g, redirect, url_for, render_template, flash
+from flask import Flask, request, session, redirect, url_for, render_template, flash
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -14,7 +15,8 @@ app.config.update(dict(
     DEBUG=True,
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True,
     USERNAME='admin',
-    PASSWORD='default'
+    PASSWORD='default',
+    PER_PAGE=3
 ))
 
 app.config.from_envvar('FLASKR_SETTINGS', silent=True)
@@ -42,11 +44,13 @@ class Comment(db.Model):
     def __repr__(self):
         return '<Comment %r>' % self.reply
 
-'''index page showing all posts'''
+'''index page showing all posts paginated'''
 @app.route('/')
 def show_entries():
-    entries = Post.query.order_by(Post.id.desc()).all()
-    return render_template('show_entries.html', entries=entries)
+    page=request.args.get('page', 1, type=int)
+    pagination = Post.query.order_by(Post.id.desc()).paginate(page,per_page=app.config['PER_PAGE'],error_out=False)
+    entries=pagination.items
+    return render_template('show_entries.html', entries=entries, pagination=pagination)
 
 '''url for each post and its guest comments'''
 @app.route('/post/<int:id>', methods=['GET', 'POST'])

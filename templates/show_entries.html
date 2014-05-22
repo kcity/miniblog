@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% import "pagination.html" as p %}
 {% block body %}
   <div class="row">
       <div class="col-sm-8 blog-main">
@@ -12,6 +13,7 @@
           {% else %}
               <div>No entries here so far</div>
           {% endfor %}
+          <div class="pagination">{{ p.pagination_widget(pagination, '.show_entries') }}</div>
         </div>
             <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
               <div class="sidebar-module sidebar-module-inset">
